@@ -23,7 +23,7 @@ try:
 except FileExistsError:
     pass
 
-main_directory = f'{os.getcwd()}\\{location}'
+main_directory = f'{os.getcwd()}/{location}'
 os.chdir(main_directory)
 
 search_response = requests.request("GET", search_url, headers=headers, params=search_querystring)
@@ -109,7 +109,7 @@ while i <= page_number:
             os.mkdir(data_dict['hotel name'])
         except FileExistsError:
             pass
-        os.chdir(f'{main_directory}\\{data_dict["hotel name"]}')
+        os.chdir(f'{main_directory}/{data_dict["hotel name"]}')
         querystring = {"id": data_dict['id']}
         response = requests.request("GET", photo_url, headers=headers, params=querystring)
         with open('hotel image.json', 'w') as file:
