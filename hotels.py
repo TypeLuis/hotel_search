@@ -45,6 +45,12 @@ for suggestion in suggestions:
                             f'is (n) (y/n): ').lower()
         if destination == 'y':
             destination_id = suggestion['destinationId']
+            try:
+                os.mkdir(name)
+            except FileExistsError:
+                pass
+            
+            region_directory = f'{os.getcwd()}/{name}'
             Breaker = True
             break
         elif destination == 'n':
@@ -98,7 +104,7 @@ while i <= page_number:
 
 
     for hotel in hotels_list:
-        os.chdir(main_directory)
+        os.chdir(region_directory)
         data_dict = {}
         data_dict['id'] = hotel['id']
         data_dict['hotel name'] = hotel['name']
@@ -109,7 +115,7 @@ while i <= page_number:
             os.mkdir(data_dict['hotel name'])
         except FileExistsError:
             pass
-        os.chdir(f'{main_directory}/{data_dict["hotel name"]}')
+        os.chdir(f'{region_directory}/{data_dict["hotel name"]}')
         querystring = {"id": data_dict['id']}
         response = requests.request("GET", photo_url, headers=headers, params=querystring)
         with open('hotel image.json', 'w') as file:
@@ -139,6 +145,6 @@ while i <= page_number:
                        f' Hotel name: {data_dict["hotel name"]}')
         lists.append(data_dict)
 
-os.chdir(main_directory)
+os.chdir(region_directory)
 df = pd.DataFrame(lists)
 df.to_csv(f'hotel.csv', index=False)
